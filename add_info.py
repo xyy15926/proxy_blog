@@ -1,6 +1,16 @@
+#!/usr/bin/env python3
+#----------------------------------------------------------
+#   Name: add_info.py
+#   Author: xyy15926
+#   Created at: 2019-08-31 13:14:40
+#   Updated at: 2019-08-31 13:27:39
+#   Description:
+#----------------------------------------------------------
+
 import sys
 import os
 import time
+import argparse
 from shutil import copy
 
 def _add_info(file):
@@ -160,7 +170,22 @@ def recover_imgs(source="source/_posts"):
 
 
 if __name__ == "__main__":
-    # add_info("source/_posts")
-    # mv_imgs(source="source/_posts", dest="source/imgs")
-    # replace_imgs(source="source/_posts")
-    recover_imgs(source="source/_posts")
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+            "--mv_imgs",
+            action="store_const",
+            const="mv_and_rep",
+            default="rec",
+            help="cp the images from source/_posts to"
+                "source/imgs, and replace imgs link in"
+                "markdown(default: recover imgs link)"
+    )
+
+    args, _ = parser.parse_known_args()
+    if args.mv_imgs == "mv_and_rep":
+        mv_imgs(source="source/_posts", dest="source/imgs")
+        replace_imgs(source="source/_posts")
+    else:
+        recover_imgs(source="source/_posts")
+
+
